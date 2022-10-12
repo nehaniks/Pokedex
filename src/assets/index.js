@@ -1,0 +1,1 @@
+export const LOGO_IMAGE = 'https://www.freepnglogos.com/uploads/pokeball-png/pokeball-the-poke-basic-league-accepting-challengers-9.png'

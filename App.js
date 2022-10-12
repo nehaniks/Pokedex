@@ -13,15 +13,26 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
+
+import { POKEDEX_APP_BASE_URL } from "@env";
+import Header from './src/components/Header';
 
 const App = () => {
   return (
     <SafeAreaView>
       <StatusBar/>
-      <Text>Pokedex</Text>
+
+      {/* Header */}
+      <Header />
+
+      {/* Search Bar */}
+      
+      {/* Filter */}
+      
+      {/* Results */}
+    
     </SafeAreaView>
   );
 };
