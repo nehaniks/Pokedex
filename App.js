@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,8 +18,23 @@ import {
 
 import Header from './src/components/Header';
 import Filter from './src/components/Filter';
+import Pokemons from './src/components/Pokemons';
+
+import { getPokemons } from './src/utils';
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [pokemonList, setPokemonList] = useState({});
+  const [nextUrl, setNextUrl] = useState('');
+
+  useEffect(() => {
+    getPokemons().then(res => {
+      setPokemonList(res.results);
+      setNextUrl(res.next);
+      setIsLoading(false);
+    })
+  }, [])
+
   return (
     <SafeAreaView>
       <StatusBar/>
@@ -32,8 +47,17 @@ const App = () => {
       {/* Filter */}
       <Filter />
 
-      {/* Results */}
-    
+      {/* Pokemons */}
+      { isLoading ?
+        <Text>Loading Pokemons .....</Text>
+      :
+        <Pokemons 
+          pokemonList={pokemonList} 
+          nextUrl={nextUrl} 
+          onChangePokemonList={(value) => setPokemonList([...pokemonList, ...value])}
+          onChangeNextUrl={(value) => setNextUrl(value)}
+        />
+      }
     </SafeAreaView>
   );
 };
