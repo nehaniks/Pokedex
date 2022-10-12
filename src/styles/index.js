@@ -19,7 +19,9 @@ export const SCALED_SIZE = (size) => Math.ceil(size * scale);
 
 // COLORS
 export const PRIMARY = '#FFCC00';
+export const PRIMARY_DARK = '#D5A100';
 export const SECONDARY = '#0A285F';
+export const SECONDARY_LIGHT = '#0075BE';
 export const WHITE = '#FFFFFF';
 export const BLACK = '#000000';
 

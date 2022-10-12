@@ -16,8 +16,8 @@ import {
   View,
 } from 'react-native';
 
-import { POKEDEX_APP_BASE_URL } from "@env";
 import Header from './src/components/Header';
+import Filter from './src/components/Filter';
 
 const App = () => {
   return (
@@ -30,7 +30,8 @@ const App = () => {
       {/* Search Bar */}
       
       {/* Filter */}
-      
+      <Filter />
+
       {/* Results */}
     
     </SafeAreaView>
