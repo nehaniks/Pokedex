@@ -6,9 +6,17 @@ export async function getPokemons(url) {
       ).then(res => res.json())
       .catch(error => console.log(error));
   
-    console.log(request);
+    // console.log(request);
     return {
-      results: request.results,
-      next: request.next
+      results: request.results ? request.results : request.pokemon,
+      next: request.next ? request.next : ''
     }
- }
+}
+
+export async function getPokemonData(url) {
+  const request = await fetch(url)
+    .then(res => res.json())
+    .catch(error => console.log(error));
+
+  return request;
+}
