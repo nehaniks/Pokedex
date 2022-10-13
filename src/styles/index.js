@@ -28,11 +28,11 @@ export const BLACK = '#000000';
 // TYPOGRAPHY
 // Font Style
 export const FONT_REGULAR = {
-    fonFamily: 'Roboto',
-    fontWeight: '400'
+    fontWeight: '400',
+    color: SECONDARY
 }
 
 export const FONT_BOLD = {
-    fonFamily: 'Roboto',
-    fontWeight: '700'
+    fontWeight: '700',
+    color: SECONDARY
 }

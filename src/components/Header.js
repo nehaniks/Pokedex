@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 25 / FONT_SCALE,
         textTransform: 'uppercase',
-        color: SECONDARY,
     },
     logoImage: {
         width: SCALED_SIZE(35),
