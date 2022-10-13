@@ -7,10 +7,10 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { FONT_SCALE, SCALED_SIZE, SECONDARY, WINDOW_WIDTH, WINDOW_HEIGHT, FONT_BOLD } from '../styles';
+import { FONT_SCALE, SCALED_SIZE, SECONDARY, WINDOW_WIDTH, WINDOW_HEIGHT, FONT_BOLD, SECONDARY_LIGHT } from '../styles';
 import { getPokemonData } from '../utils';
 
-const Thumbnail = ({ pokemon }) => {
+const Thumbnail = ({ pokemon, favourites }) => {
     const navigation = useNavigation();
     const [pokemonData, setPokemonData] = useState();
 
@@ -25,7 +25,13 @@ const Thumbnail = ({ pokemon }) => {
         { pokemonData?.sprites?.front_default ? 
             <TouchableOpacity 
                 id='thumbnail-button' 
-                style={styles.thumbnailButton}
+                style={[
+                    styles.thumbnailButton, 
+                    {
+                        borderWidth: favourites.includes(pokemonData.name) ? 1 : 0,
+                        borderColor: SECONDARY_LIGHT
+                    }
+                ]}
                 onPress={() => navigation.navigate('Pokemon', pokemonData)}
             >
                 <Image 

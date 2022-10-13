@@ -14,7 +14,7 @@
  import Header from '../components/Header';
  import Thumbnail from '../components/Thumbnail';
  
- import { getPokemons } from '../utils';
+ import { getPokemons, handleFavourites } from '../utils';
  import { 
    PRIMARY, 
    WINDOW_HEIGHT, 
@@ -25,8 +25,8 @@
    WHITE, 
    FONT_REGULAR
   } from '../styles';
- import requests from '../utils/requests';
-import { useNavigation } from '@react-navigation/native';
+import requests from '../utils/requests';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
  
  const HomeScreen = () => {
   const navigation = useNavigation();
@@ -34,6 +34,8 @@ import { useNavigation } from '@react-navigation/native';
    const [pokemonList, setPokemonList] = useState([]);
    const [selectedTitle, setSelectedTitle] = useState('All');
    const [nextUrl, setNextUrl] = useState('');
+   const [favourites, setFavourites] = useState([]);
+   const isFocused = useIsFocused();
 
    useLayoutEffect(() => {
       navigation.setOptions({
@@ -48,6 +50,12 @@ import { useNavigation } from '@react-navigation/native';
        setIsLoading(false);
      })
    }, [])
+
+   useEffect(() => {
+    handleFavourites('', 'get').then(res => {
+      setFavourites(res);
+    })
+   }, [isFocused])
  
    function handleValuesChange(pokemonListValue, nextUrlValue, type) {
      setNextUrl(nextUrlValue);
@@ -93,7 +101,7 @@ import { useNavigation } from '@react-navigation/native';
                id='pokemons-list'
                data={pokemonList}
                maxToRenderPerBatch={10}
-               renderItem={(item) => <Thumbnail pokemon={item.item} />}
+               renderItem={(item) => <Thumbnail pokemon={item.item} favourites={favourites} />}
                numColumns={2}
                showsVerticalScrollIndicator={false}
                keyExtractor={(item, index) => index.toString() + item.name + index.toString()}

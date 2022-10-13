@@ -1,25 +1,32 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     Image,
-    SafeAreaView,
     TouchableOpacity,
     ScrollView
 } from 'react-native';
 
-import { ArrowLeftIcon, StarIcon, HeartIcon, ChevronUpDownIcon, ScaleIcon } from 'react-native-heroicons/outline';
-import Thumbnail from '../components/Thumbnail';
-import { FONT_SCALE, FONT_BOLD, SCALED_SIZE, PRIMARY, SECONDARY, WHITE, PRIMARY_DARK, BLACK, SECONDARY_LIGHT, FONT_REGULAR } from '../styles';
+import { ArrowLeftIcon, StarIcon, HeartIcon, ChevronUpDownIcon, ScaleIcon, HandThumbUpIcon } from 'react-native-heroicons/outline';
+import { HandThumbUpIcon as HandThumbUpIconSolid } from 'react-native-heroicons/solid';
+import { FONT_SCALE, FONT_BOLD, SCALED_SIZE, PRIMARY, SECONDARY, WHITE, PRIMARY_DARK,  SECONDARY_LIGHT, FONT_REGULAR } from '../styles';
+
+import { handleFavourites } from '../utils';
 
 const PokemonScreen = () => {
     const navigation = useNavigation();
     const { params } = useRoute();
+    const [favourites, setFavourites] = useState([]);
 
-    console.log(params);
-
+    useEffect(() => {
+        handleFavourites('', 'get').then(res => {
+            console.log(res);
+            setFavourites(res);
+        })
+    }, [])
+    
     useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false
@@ -56,6 +63,28 @@ const PokemonScreen = () => {
                         </View>
                     </View>
                 </View>
+
+                {/* Favourites */}
+                <TouchableOpacity 
+                    id='favourite-button' 
+                    style={styles.favouriteButton} 
+                    onPress={() => {
+                        favourites.includes(params.name) ?
+                            handleFavourites(params.name, 'remove').then(res => {
+                                setFavourites(res)
+                            })
+                        :
+                            handleFavourites(params.name, 'set').then(res => {
+                                setFavourites(res)
+                            })
+                    }}
+                >
+                    {favourites.includes(params.name) ? 
+                        <HandThumbUpIconSolid size={40} color={SECONDARY_LIGHT} />
+                    :
+                        <HandThumbUpIcon size={40} color={SECONDARY_LIGHT} />
+                    }
+                </TouchableOpacity>
             </View>
             
             {/* Data */}
@@ -192,6 +221,12 @@ const styles = StyleSheet.create({
         marginVertical: SCALED_SIZE(10),
         borderBottomWidth: 0.3,
         borderBottomColor: SECONDARY_LIGHT
+    },
+    favouriteButton: {
+        position: 'absolute',
+        bottom: 0,
+        left: SCALED_SIZE(10),
+        alignItems: 'center'
     }
 })
 
