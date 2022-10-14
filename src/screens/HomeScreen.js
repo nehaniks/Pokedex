@@ -27,6 +27,7 @@
   } from '../styles';
 import requests from '../utils/requests';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
+import Search from '../components/Search';
  
  const HomeScreen = () => {
   const navigation = useNavigation();
@@ -70,7 +71,8 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
        <Header />
  
        {/* Search Bar */}
-       
+       <Search />
+
        {/* Filter */}
        <View id='filter-container' style={styles.filterContainer}>
            <ScrollView id='filter-view' horizontal showsHorizontalScrollIndicator={false}>
@@ -120,41 +122,41 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
    );
  };
  
- const styles = StyleSheet.create({
-   loader: {
-       position: 'absolute',
-       width: WINDOW_WIDTH,
-       height: WINDOW_HEIGHT,
-       backgroundColor: PRIMARY
-   },
-   filterContainer: {
-       flexDirection: 'row',
-       justifyContent: 'space-between',
-       alignItems: 'center',
-       backgroundColor: PRIMARY,
-   },
-   filterButton: {
-       marginHorizontal: SCALED_SIZE(5),
-       padding: SCALED_SIZE(5),
-       borderTopLeftRadius: SCALED_SIZE(10),
-       borderTopRightRadius: SCALED_SIZE(10),
-   },
-   filterTitle: {
-       marginHorizontal: SCALED_SIZE(5),
-       fontSize: 20 / FONT_SCALE,
-   },
-   logoImage: {
-       width: SCALED_SIZE(35),
-       height: SCALED_SIZE(35)
-   },
-   pokemonContainer: {
-       marginTop: SCALED_SIZE(10),
-       padding: SCALED_SIZE(10),
-       flexDirection: 'row',
-       justifyContent: 'space-between',
-       alignItems: 'center',
-       backgroundColor: WHITE
-   },
- })
+const styles = StyleSheet.create({
+  loader: {
+    position: 'absolute',
+    width: WINDOW_WIDTH,
+    height: WINDOW_HEIGHT,
+    backgroundColor: PRIMARY
+  },
+  filterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: PRIMARY,
+  },
+  filterButton: {
+    marginHorizontal: SCALED_SIZE(5),
+    padding: SCALED_SIZE(5),
+    borderTopLeftRadius: SCALED_SIZE(10),
+    borderTopRightRadius: SCALED_SIZE(10),
+  },
+  filterTitle: {
+    marginHorizontal: SCALED_SIZE(5),
+    fontSize: 20 / FONT_SCALE,
+  },
+  logoImage: {
+    width: SCALED_SIZE(35),
+    height: SCALED_SIZE(35)
+  },
+  pokemonContainer: {
+    marginTop: SCALED_SIZE(10),
+    padding: SCALED_SIZE(10),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: WHITE
+  },
+})
  
  export default HomeScreen;
