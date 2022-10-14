@@ -6,15 +6,17 @@ import {
     View,
     Image,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Platform
 } from 'react-native';
 
 import { ArrowLeftIcon, StarIcon, HeartIcon, ChevronUpDownIcon, ScaleIcon, HandThumbUpIcon } from 'react-native-heroicons/outline';
 import { HandThumbUpIcon as HandThumbUpIconSolid } from 'react-native-heroicons/solid';
-import { FONT_SCALE, FONT_BOLD, SCALED_SIZE, PRIMARY, SECONDARY, WHITE, PRIMARY_DARK,  SECONDARY_LIGHT, FONT_REGULAR } from '../styles';
+import { FONT_SCALE, FONT_BOLD, SCALED_SIZE, PRIMARY, SECONDARY, WHITE, PRIMARY_DARK,  SECONDARY_LIGHT, FONT_REGULAR, WINDOW_HEIGHT } from '../styles';
 
 import { handleFavourites } from '../utils';
 
+// Display selected Pokemon data
 const PokemonScreen = () => {
     const navigation = useNavigation();
     const { params } = useRoute();
@@ -34,10 +36,10 @@ const PokemonScreen = () => {
     }, [])
 
     return (
-        <View id='pokemon-data-container'>
+        <View id='pokemon-data-container' style={{ height: WINDOW_HEIGHT, backgroundColor: PRIMARY }}>
             {/* Image */}
             <View id='pokemon-image-wrapper' style={styles.imageWrapper}>
-                <Image id='pokemon-image' source={{ uri: params.sprites.front_default }} style={styles.pokemonImage}></Image>
+                <Image id='pokemon-image' source={{ uri: params.sprites.other['official-artwork'].front_default }} style={styles.pokemonImage}></Image>
                 <TouchableOpacity id='back-button' style={styles.backIcon} onPress={() => navigation.goBack()}>
                     <ArrowLeftIcon size={20} strokeWidth={3} color={SECONDARY} />
                 </TouchableOpacity>
@@ -88,12 +90,16 @@ const PokemonScreen = () => {
             </View>
             
             {/* Data */}
-            <ScrollView id='main-content' style={styles.dataWrapper} showsVerticalScrollIndicator={false}>
+            <ScrollView 
+                id='main-content' 
+                style={styles.dataWrapper} 
+                showsVerticalScrollIndicator={false}
+            >
                 <Text id='pokemon-name' style={[styles.nameText, FONT_BOLD]}>{params.name}</Text>
 
                 {/* Types */}
                 <Text id='types-title' style={[FONT_BOLD, styles.titleText]}>Types</Text>
-                <View id='types-wrapper' style={[styles.flexWrapper, {marginHorizontal: 0, flexWrap: 'wrap', justifyContent: 'space-evenly'}]}>
+                <View id='types-wrapper' style={styles.flexListWrapper}>
                     {params.types.map((type) => (
                         <Text id='type' key={type.type.name} style={styles.fontRegularBox}>{type.type.name}</Text>
                     ))}
@@ -106,7 +112,7 @@ const PokemonScreen = () => {
 
                 {/* Stats */}
                 <Text id='stats-title' style={[FONT_BOLD, styles.titleText]}>Stats</Text>
-                <View id='stats-wrapper' style={[styles.flexWrapper, {marginHorizontal: 0, flexWrap: 'wrap', justifyContent: 'space-evenly'}]}>
+                <View id='stats-wrapper' style={styles.flexListWrapper}>
                     {params.stats.map((stat) => (
                         <View id='stats-view' key={stat.stat.name} style={styles.statsView}>
                             <Text id='stat-title' style={[styles.statTitle, FONT_REGULAR]}>{stat.stat.name}</Text>
@@ -124,7 +130,7 @@ const PokemonScreen = () => {
 
                 {/* Abilities */}
                 <Text id='abilities-title' style={[FONT_BOLD, styles.titleText]}>Abilities</Text>
-                <View id='abilities-wrapper' style={[styles.flexWrapper, {marginHorizontal: 0, flexWrap: 'wrap', justifyContent: 'space-evenly'}]}>
+                <View id='abilities-wrapper' style={[styles.flexListWrapper, {minHeight: Platform.OS === 'ios' ? 30 : 150}]}>
                     {params.abilities.map((ability) => (
                         <Text id='ability' key={ability.ability.name} style={styles.fontRegularBox}>{ability.ability.name}</Text>
                     ))}
@@ -138,19 +144,20 @@ const styles = StyleSheet.create({
     imageWrapper: {
         position: 'relative',
         width: '100%',
-        paddingTop: SCALED_SIZE(20),
+        height: '30%',
+        paddingTop: Platform.OS === 'ios' ? SCALED_SIZE(20) : 0,
         paddingBottom: SCALED_SIZE(5),
         backgroundColor: PRIMARY,
         alignItems: 'center',
     },
     pokemonImage: {
-        width: SCALED_SIZE(200),
-        height: SCALED_SIZE(200),
+        width: 200,
+        height: 200,
         backgroundColor: PRIMARY,
     },
     backIcon: {
         position: 'absolute',
-        top: SCALED_SIZE(40),
+        top: Platform.OS === 'ios' ? SCALED_SIZE(40) : SCALED_SIZE(10),
         left: SCALED_SIZE(10),
         padding: SCALED_SIZE(10),
         alignItems: 'center',
@@ -160,11 +167,18 @@ const styles = StyleSheet.create({
         borderRadius: SCALED_SIZE(20)
     },
     dataWrapper: {
-        padding: SCALED_SIZE(10)
+        minheight: Platform.OS === 'ios' ? '35%' : 1000,
+        padding: SCALED_SIZE(10),
+        backgroundColor: WHITE,
+        borderTopLeftRadius: SCALED_SIZE(30),
+        borderTopRightRadius: SCALED_SIZE(30),
+        overflow: 'hidden'
     },
     flexEnd: {
+        position: 'absolute',
         flexDirection: 'row',
-        alignSelf: 'flex-end'
+        bottom: SCALED_SIZE(5),
+        right: SCALED_SIZE(10),
     },
     nameText: {
         fontSize: 30 / FONT_SCALE,
@@ -175,6 +189,15 @@ const styles = StyleSheet.create({
     flexWrapper: {
         flexDirection: 'row',
         marginHorizontal: SCALED_SIZE(5),
+        alignItems: 'center',
+    },
+    flexListWrapper: {
+        minHeight: SCALED_SIZE(30),
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        marginHorizontal: 0,
+        marginHorizontal: SCALED_SIZE(5),
+        justifyContent: 'space-evenly',
         alignItems: 'center',
     },
     fontRegularSmall: {
@@ -197,6 +220,7 @@ const styles = StyleSheet.create({
         color: PRIMARY_DARK
     },
     statsView: {
+        minHeight: SCALED_SIZE(10),
         flexDirection: 'row',
         marginVertical: SCALED_SIZE(5),
         paddingHorizontal: SCALED_SIZE(5),

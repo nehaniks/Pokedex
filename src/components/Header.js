@@ -6,9 +6,10 @@ import {
     Image
 } from 'react-native';
 
-import { FONT_SCALE, FONT_BOLD, SCALED_SIZE, PRIMARY, SECONDARY } from '../styles';
+import { FONT_SCALE, FONT_BOLD, SCALED_SIZE, PRIMARY } from '../styles';
 import { LOGO_IMAGE } from '../assets';
 
+// Header component with App name and Logo
 const Header = () => {
     return (
         <View id='header-container' style={styles.headerContainer}>

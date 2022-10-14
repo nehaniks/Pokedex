@@ -20,7 +20,6 @@
    WINDOW_HEIGHT, 
    WINDOW_WIDTH, 
    SCALED_SIZE, 
-   SECONDARY, 
    FONT_SCALE, 
    WHITE, 
    FONT_REGULAR
@@ -29,6 +28,7 @@ import requests from '../utils/requests';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Search from '../components/Search';
  
+// Home Screen to display list of Pokemons, Search Pokemon and Filter list based on type
  const HomeScreen = () => {
   const navigation = useNavigation();
    const [isLoading, setIsLoading] = useState(true);
@@ -46,8 +46,12 @@ import Search from '../components/Search';
  
    useEffect(() => {
      getPokemons().then(res => {
-       setPokemonList(res.results);
-       setNextUrl(res.next);
+       if( res.error === '' ) {
+          setPokemonList(res.results);
+          setNextUrl(res.next);
+       } else {
+          navigation.navigate('Error', res);
+       }
        setIsLoading(false);
      })
    }, [])
@@ -85,7 +89,11 @@ import Search from '../components/Search';
                            handleValuesChange([], '', 'overwrite')
                            setSelectedTitle(title)
                            getPokemons(url).then(res => {
-                               handleValuesChange(res.results, res.next, 'overwrite')
+                              if( res.error === '' ) {
+                                  handleValuesChange(res.results, res.next, 'overwrite')
+                              } else {
+                                  navigation.navigate('Error', res);
+                              }
                            })
                        }}>
                        <Text id='filter-title' style={[styles.filterTitle, FONT_REGULAR]}>{title}</Text>
@@ -111,7 +119,11 @@ import Search from '../components/Search';
                onEndReached={() => {
                    if (nextUrl) {
                        getPokemons(nextUrl).then(res => {
-                           handleValuesChange(res.results, res.next, 'append');
+                           if( res.error === '' ) {
+                                handleValuesChange(res.results, res.next, 'append');
+                            } else {
+                                navigation.navigate('Error', res);
+                            }
                        })
                    }
                }}
@@ -150,7 +162,7 @@ const styles = StyleSheet.create({
     height: SCALED_SIZE(35)
   },
   pokemonContainer: {
-    marginTop: SCALED_SIZE(10),
+    paddingTop: SCALED_SIZE(20),
     padding: SCALED_SIZE(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
