@@ -24,6 +24,7 @@ export const SECONDARY = '#0A285F';
 export const SECONDARY_LIGHT = '#0075BE';
 export const WHITE = '#FFFFFF';
 export const BLACK = '#000000';
+export const GRAY = '#D3D3D3';
 
 // TYPOGRAPHY
 // Font Style

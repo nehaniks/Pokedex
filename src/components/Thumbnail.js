@@ -19,7 +19,11 @@ const Thumbnail = ({ pokemon, favourites }) => {
 
     useEffect(() => {
         getPokemonData(pokemon.url ? pokemon.url : pokemon.pokemon.url).then(res => {
-            setPokemonData(res);
+            if( res.error === '' ) {
+                setPokemonData(res.results);
+            } else {
+                navigation.navigate('Error', res);
+            }
         })
     }, [])
     

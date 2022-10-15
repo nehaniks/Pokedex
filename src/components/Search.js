@@ -8,7 +8,7 @@ import {
     Platform
 } from 'react-native';
 
-import { FONT_SCALE, SCALED_SIZE, PRIMARY, FONT_REGULAR, WHITE, SECONDARY } from '../styles';
+import { FONT_SCALE, SCALED_SIZE, PRIMARY, FONT_REGULAR, WHITE, SECONDARY, GRAY } from '../styles';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
 
@@ -25,9 +25,10 @@ const Search = () => {
             <View id='search-wrapper' style={styles.searchWrapper}>
                 <TextInput 
                     id='search-text' 
-                    placeholder='Seach Pokemon' 
+                    placeholder='Seach Pokemon'
+                    placeholderTextColor={GRAY}
                     style={[styles.searchText, FONT_REGULAR]}
-                    onChangeText={(text) => setSearchText(text.toLowerCase())}
+                    onChangeText={(text) => setSearchText(text)}
                     value={searchText}
                 />
 
@@ -37,9 +38,13 @@ const Search = () => {
                     disabled={searchText.length === 0}
                     onPress={() => {
                         Keyboard.dismiss();
-                        getPokemonData(requests.fetchAll.url + searchText)
+                        getPokemonData(requests.fetchAll.url + searchText.toLocaleLowerCase())
                             .then(res => {
-                                navigation.navigate('Pokemon', res)
+                                if( res.error === '' ) {
+                                    navigation.navigate('Pokemon', res.results)
+                                } else {
+                                    navigation.navigate('Error', res);
+                                }
                             })
                     }}
                 >

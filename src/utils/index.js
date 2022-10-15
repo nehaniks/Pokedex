@@ -20,11 +20,17 @@ export async function getPokemons(url) {
 
 // Function to get details of selected Pokemon
 export async function getPokemonData(url) {
+  let errorResponse = {};
   const request = await fetch(url)
     .then(res => res.json())
-    .catch(error => console.log(error));
+    .catch(error => {
+      errorResponse = formatError(error) 
+    });
 
-  return request;
+  return {
+    results: request ? request : '',
+    error: errorResponse?.error ? errorResponse?.error : ''
+  }
 }
 
 // Function to format error response
